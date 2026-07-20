@@ -4,9 +4,25 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 const links = {
-  Ürün: ['Özellikler', 'AI Koç', 'Ninniler', 'Gelişim Takibi', 'Fiyatlar'],
-  Şirket: ['Hakkımızda', 'Blog', 'Basın', 'Kariyer', 'İletişim'],
-  Destek: ['Yardım Merkezi', 'Gizlilik Politikası', 'Kullanım Şartları', 'Çerez Politikası'],
+  Ürün: [
+    { label: 'Özellikler', href: '#features' },
+    { label: 'AI Koç', href: '#coach' },
+    { label: 'Ninniler', href: '#coach' },
+    { label: 'Gelişim Takibi', href: '#dashboard' },
+    { label: 'Fiyatlar', href: '#pricing' },
+  ],
+  Şirket: [
+    { label: 'Hakkımızda', href: '#' },
+    { label: 'Blog', href: '#' },
+    { label: 'Basın', href: '#' },
+    { label: 'Kariyer', href: '#' },
+    { label: 'İletişim', href: 'mailto:info@buyuyo.app' },
+  ],
+  Destek: [
+    { label: 'Yardım Merkezi', href: '#' },
+    { label: 'Gizlilik Politikası', href: '/gizlilik' },
+    { label: 'Kullanım Şartları', href: '/kullanim-kosullari' },
+  ],
 };
 
 export default function Footer() {
@@ -68,12 +84,12 @@ export default function Footer() {
               <p className="font-heading font-700 text-sm text-white mb-4">{category}</p>
               <ul className="space-y-3">
                 {items.map((item) => (
-                  <li key={item}>
+                  <li key={item.label}>
                     <a
-                      href="#"
+                      href={item.href}
                       className="font-body text-sm text-white/40 hover:text-white transition-colors duration-200"
                     >
-                      {item}
+                      {item.label}
                     </a>
                   </li>
                 ))}
