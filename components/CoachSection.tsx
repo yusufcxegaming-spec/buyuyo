@@ -3,8 +3,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const GROQ_API_KEY = process.env.NEXT_PUBLIC_GROQ_API_KEY ?? '';
-
 const quickQuestions = [
   'Bebeğim neden ağlıyor?',
   'Uyku düzeni nasıl olmalı?',
@@ -33,12 +31,9 @@ KURALLAR:
 Bu 3 soru, ebeveynin bir sonraki adımda sorabileceği en alakalı, kısa sorular olsun. Köşeli parantez olmadan yaz.`;
 
 async function askGroq(messages: { role: string; content: string }[]): Promise<string> {
-  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+  const res = await fetch('/api/groq/chat', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${GROQ_API_KEY}`,
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model: 'llama-3.1-8b-instant',
       messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
@@ -46,8 +41,9 @@ async function askGroq(messages: { role: string; content: string }[]): Promise<s
       max_tokens: 800,
     }),
   });
+  if (!res.ok) return 'Üzgünüm, şu an cevap veremiyorum.';
   const data = await res.json();
-  return data.choices?.[0]?.message?.content ?? 'Üzgünüm, şu an cevap veremiyorum.';
+  return data.content || 'Üzgünüm, şu an cevap veremiyorum.';
 }
 
 function parseResponse(raw: string): { text: string; followUps: string[] } {
