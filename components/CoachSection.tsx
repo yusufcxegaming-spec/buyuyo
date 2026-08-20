@@ -35,7 +35,7 @@ async function askGroq(messages: { role: string; content: string }[]): Promise<s
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'llama-3.1-8b-instant',
+      model: 'openai/gpt-oss-20b',
       messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
       temperature: 0.7,
       max_tokens: 800,

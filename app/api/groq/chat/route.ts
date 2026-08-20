@@ -2,7 +2,7 @@
 // API key burada kalır, client'a hiç gönderilmez.
 import { NextRequest, NextResponse } from 'next/server';
 
-const ALLOWED_MODELS = new Set(['llama-3.3-70b-versatile', 'llama-3.1-8b-instant']);
+const ALLOWED_MODELS = new Set(['openai/gpt-oss-120b', 'openai/gpt-oss-20b']);
 const MAX_TOKENS_CAP = 3000;
 
 export async function POST(req: NextRequest) {
@@ -41,6 +41,9 @@ export async function POST(req: NextRequest) {
         max_tokens: Math.min(typeof max_tokens === 'number' ? max_tokens : 500, MAX_TOKENS_CAP),
         top_p: typeof top_p === 'number' ? top_p : undefined,
         response_format: response_format === 'json_object' ? { type: 'json_object' } : undefined,
+        // gpt-oss modelleri cevap vermeden önce "düşünüyor" — bu düşünme de max_tokens'tan
+        // düşülüyor, düşürmezsek bazen gerçek cevap boş/yarım kalıyor.
+        reasoning_effort: 'low',
       }),
     });
 
